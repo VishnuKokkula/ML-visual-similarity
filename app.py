@@ -49,7 +49,7 @@ uploaded_file = st.file_uploader("Upload a product image", type=["jpg", "jpeg", 
 
 if uploaded_file is not None:
     query_img = Image.open(uploaded_file).convert('RGB')
-    st.image(query_img, caption="Uploaded Image", use_column_width=True)
+    st.image(query_img, caption="Uploaded Image", use_container_width=True)  # ✅ Updated here
 
     with st.spinner("Extracting features and finding similar products..."):
         query_feature = extract_feature(query_img)
@@ -61,6 +61,6 @@ if uploaded_file is not None:
         img_path = os.path.join("images", os.path.basename(image_paths[idx]))  # ✅ safer for cloud
         if os.path.exists(img_path):
             img = Image.open(img_path)
-            col.image(img, use_column_width=True)
+            col.image(img, use_container_width=True)  # ✅ Updated here
         else:
             col.warning("Image not found.")
