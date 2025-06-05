@@ -1,2 +1,0 @@
-https://download.pytorch.org/whl/cpu/torch-2.2.2%2Bcpu-cp313-cp313-win_amd64.whl
-https://download.pytorch.org/whl/cpu/torchvision-0.17.2%2Bcpu-cp313-cp313-win_amd64.whl
