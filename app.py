@@ -44,9 +44,9 @@ def recommend_similar(feature, top_n=5):
 
 # --- Streamlit UI ---
 
-# Colored title: "MoreLikeThis" in orange (#FF4500), rest default
+# Colored title: "MoreLikeThis" in orange (#FFA500), rest default
 st.markdown(
-    '<h1><span style="color:#FF4500;">MoreLikeThis</span>-Fashion Visual Search & Intelligent Styling Assistant</h1>',
+    '<h1><span style="color:#FFA500;">MoreLikeThis</span>-Fashion Visual Search & Intelligent Styling Assistant</h1>',
     unsafe_allow_html=True
 )
 
