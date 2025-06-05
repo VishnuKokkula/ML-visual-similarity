@@ -44,7 +44,7 @@ def recommend_similar(feature, top_n=5):
     return indices
 
 # --- Streamlit UI ---
-st.title("Stylumia Visual Similarity Demo")
+st.title("MoreLikeThis-Fashion Visual Search & Intelligent Styling Assistant")
 
 uploaded_file = st.file_uploader("Upload a product image", type=["jpg", "jpeg", "png"])
 
