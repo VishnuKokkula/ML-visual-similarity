@@ -10,7 +10,8 @@ import os
 # --- Load features and image paths ---
 features = np.load("features.npy")
 with open("image_paths.txt", "r") as f:
-    image_paths = [line.strip() for line in f]
+    # ✅ Normalize Windows-style backslashes to forward slashes
+    image_paths = [line.strip().replace("\\", "/") for line in f]
 
 # --- Load ResNet model for feature extraction ---
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -49,7 +50,7 @@ uploaded_file = st.file_uploader("Upload a product image", type=["jpg", "jpeg", 
 
 if uploaded_file is not None:
     query_img = Image.open(uploaded_file).convert('RGB')
-    st.image(query_img, caption="Uploaded Image", use_container_width=True)  # ✅ Updated here
+    st.image(query_img, caption="Uploaded Image", use_container_width=True)  # ✅ Updated
 
     with st.spinner("Extracting features and finding similar products..."):
         query_feature = extract_feature(query_img)
@@ -58,9 +59,9 @@ if uploaded_file is not None:
     st.write("### Similar Products:")
     cols = st.columns(5)
     for idx, col in zip(indices, cols):
-        img_path = os.path.join("images", os.path.basename(image_paths[idx]))  # ✅ safer for cloud
+        img_path = image_paths[idx]  # ✅ already normalized
         if os.path.exists(img_path):
             img = Image.open(img_path)
-            col.image(img, use_container_width=True)  # ✅ Updated here
+            col.image(img, use_container_width=True)  # ✅ Updated
         else:
-            col.warning("Image not found.")
+            col.warning(f"Image not found: {img_path}")
