@@ -10,7 +10,6 @@ import os
 # --- Load features and image paths ---
 features = np.load("features.npy")
 with open("image_paths.txt", "r") as f:
-    # ✅ Normalize Windows-style backslashes to forward slashes
     image_paths = [line.strip().replace("\\", "/") for line in f]
 
 # --- Load ResNet model for feature extraction ---
@@ -44,13 +43,18 @@ def recommend_similar(feature, top_n=5):
     return indices
 
 # --- Streamlit UI ---
-st.title("MoreLikeThis-Fashion Visual Search & Intelligent Styling Assistant")
+
+# Colored title: "MoreLikeThis" in orange (#FF4500), rest default
+st.markdown(
+    '<h1><span style="color:#FF4500;">MoreLikeThis</span>-Fashion Visual Search & Intelligent Styling Assistant</h1>',
+    unsafe_allow_html=True
+)
 
 uploaded_file = st.file_uploader("Upload a product image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     query_img = Image.open(uploaded_file).convert('RGB')
-    st.image(query_img, caption="Uploaded Image", use_container_width=True)  # ✅ Updated
+    st.image(query_img, caption="Uploaded Image", use_container_width=True)
 
     with st.spinner("Extracting features and finding similar products..."):
         query_feature = extract_feature(query_img)
@@ -59,9 +63,9 @@ if uploaded_file is not None:
     st.write("### Similar Products:")
     cols = st.columns(5)
     for idx, col in zip(indices, cols):
-        img_path = image_paths[idx]  # ✅ already normalized
+        img_path = image_paths[idx]
         if os.path.exists(img_path):
             img = Image.open(img_path)
-            col.image(img, use_container_width=True)  # ✅ Updated
+            col.image(img, use_container_width=True)
         else:
             col.warning(f"Image not found: {img_path}")
