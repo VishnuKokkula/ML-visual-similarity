@@ -3,6 +3,3 @@ numpy
 pillow
 scikit-learn
 matplotlib
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.2.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
-torchvision==0.17.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
