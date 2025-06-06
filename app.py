@@ -15,7 +15,7 @@ with open("image_paths.txt", "r") as f:
 # --- Load ResNet model for feature extraction ---
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
-model = torch.nn.Sequential(*list(model.children())[:-1])
+model = torch.nn.Sequential(*list(model.children())[:-1])  # Remove classification layer
 model.eval()
 model.to(device)
 
@@ -33,13 +33,18 @@ transform = transforms.Compose([
 def extract_feature(img):
     img_t = transform(img).unsqueeze(0).to(device)
     with torch.no_grad():
-        feature = model(img_t).squeeze().cpu().numpy()
+        feature = model(img_t).squeeze()
+    feature = feature.cpu().numpy()
+    # Normalize the feature vector to unit length for cosine similarity
+    feature = feature / np.linalg.norm(feature)
     return feature
 
 # --- Recommend similar images ---
 def recommend_similar(feature, top_n=5):
+    # Normalize all stored features if not normalized yet
+    # Assuming features.npy already normalized, otherwise normalize here
     sims = cosine_similarity([feature], features)[0]
-    indices = sims.argsort()[::-1][1:top_n+1]
+    indices = sims.argsort()[::-1][1:top_n+1]  # Exclude the most similar (itself)
     return indices
 
 # --- Streamlit UI ---
@@ -65,7 +70,7 @@ if uploaded_file is not None:
     for idx, col in zip(indices, cols):
         img_path = image_paths[idx]
         if os.path.exists(img_path):
-            img = Image.open(img_path)
+            img = Image.open(img_path).convert('RGB')
             col.image(img, use_container_width=True)
         else:
             col.warning(f"Image not found: {img_path}")
