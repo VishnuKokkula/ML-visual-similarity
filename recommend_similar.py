@@ -8,21 +8,13 @@ features = np.load("features.npy")
 with open("image_paths.txt", "r") as f:
     image_paths = [line.strip() for line in f]
 
-# Function to get top N similar images by cosine similarity
-def get_similar_images(query_feature, top_n=5):
-    similarities = cosine_similarity([query_feature], features)[0]
-    top_indices = np.argsort(similarities)[::-1][:top_n]
+# Compute cosine similarity matrix
+similarity = cosine_similarity(features)
 
-    results = []
-    for i in top_indices:
-        results.append((image_paths[i], similarities[i]))  # path and score
-
-    return results
-
-# Optional offline visualization (for debugging or demo purposes)
+# Show similar images
 def show_similar_images(query_index, top_n=5):
     print(f"Query Image: {image_paths[query_index]}")
-    sim_scores = list(enumerate(cosine_similarity([features[query_index]], features)[0]))
+    sim_scores = list(enumerate(similarity[query_index]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
     fig, axes = plt.subplots(1, top_n + 1, figsize=(15, 5))
@@ -43,5 +35,5 @@ def show_similar_images(query_index, top_n=5):
     plt.tight_layout()
     plt.show()
 
-# Uncomment to test manually (offline)
-# show_similar_images(query_index=10, top_n=5)
+# Example usage — show 5 similar images to image at index 10
+show_similar_images(query_index=10, top_n=5)
