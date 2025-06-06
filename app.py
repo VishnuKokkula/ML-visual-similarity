@@ -7,10 +7,10 @@ from PIL import Image
 import pandas as pd
 import os
 
-from recommend_similar import get_similar_images  # make sure this import works
+from recommend_similar import get_similar_images  # Make sure this file exists and has the right function
 
 # --- Load metadata ---
-df = pd.read_excel("products_catalog_preprocessed.xlsx")
+df = pd.read_csv("products_catalog_preprocessed.csv")  # ✅ corrected from read_excel to read_csv
 
 # --- Load image paths ---
 with open("image_paths.txt", "r") as f:
@@ -71,10 +71,13 @@ if uploaded_file is not None:
             # Get metadata for product_id
             row = df[df["product_id"] == product_id]
             if not row.empty:
-                brand = row["brand"].values[0]
-                price = row["selling_price"].values[0]
-                discount = row["discount"].values[0]
-                col.markdown(f"**Brand:** {brand}<br>**Price:** ₹{price}<br>**Discount:** {discount}%", unsafe_allow_html=True)
+                brand = row.get("brand", ["N/A"]).values[0]
+                price = row.get("selling_price", ["N/A"]).values[0]
+                discount = row.get("discount", ["N/A"]).values[0]
+                col.markdown(
+                    f"**Brand:** {brand}<br>**Price:** ₹{price}<br>**Discount:** {discount}%",
+                    unsafe_allow_html=True
+                )
             else:
                 col.warning("Metadata not found")
         else:
