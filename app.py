@@ -91,7 +91,7 @@ st.sidebar.header("Filter Results")
 categories = sorted(set([v['category'] for v in product_info.values()]))
 selected_cat = st.sidebar.selectbox("Category", ["All"] + categories)
 min_price = min(v["price"] for v in product_info.values())
-max_price = min(100000, max(v["price"] for v in product_info.values()))  # Cap at 1 lakh
+max_price = min(122149, max(v["price"] for v in product_info.values()))  # Cap at 1 lakh
 selected_price = st.sidebar.slider("Price Range (₹)", min_price, max_price, (min_price, max_price), step=1000)
 
 # --- Upload an image ---
