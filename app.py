@@ -18,7 +18,7 @@ if "favorites" not in st.session_state:
     st.session_state.favorites = []
 
 # --- Load CSV catalog ---
-catalog_df = pd.read_csv("products_catalog_preprocessed.csv")
+catalog_df = pd.read_csv("products_catalog_sample.csv")
 catalog_df.columns = catalog_df.columns.str.strip()
 
 # --- Build product info dict ---
